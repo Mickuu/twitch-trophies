@@ -1,0 +1,723 @@
+/* ----------- Global ----------- */
+body {
+    background-color: #1e1e1e;
+    /* Fond sombre */
+    color: #fff;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ----------- Header ----------- */
+
+header {
+    margin-bottom: 20px;
+}
+
+/* Bannière responsive avec fond étoilé */
+.banner {
+    width: 100%;
+    height: 200px;
+    /* Hauteur par défaut */
+    background: url("img/header.png") center/cover no-repeat;
+    /* Image de fond étoilée */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Ajuster hauteur sur écrans plus larges */
+@media (min-width: 768px) {
+    .banner {
+        height: 300px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .banner {
+        height: 400px;
+    }
+}
+
+/* Couche intermédiaire (pour centrer et appliquer effets éventuels) */
+.banner-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    /* léger assombrissement si nécessaire */
+}
+
+/* Logo centré */
+
+.banner-title {
+    position: absolute;
+    color: #fff;
+    font-size: 1.5rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+    font-family: 'Rubik', sans-serif;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.banner-logo {
+    max-width: 200px;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        filter 0.5s ease;
+    animation: float 3s ease-in-out infinite;
+    position: relative;
+    cursor: pointer;
+}
+
+/* Halo animé autour du logo */
+.banner-logo::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 20px);
+    height: calc(100% + 20px);
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.5s ease;
+}
+
+/* Effet hover : zoom + halo */
+.banner-logo:hover {
+    transform: scale(1.2) rotate(-3deg);
+    filter: drop-shadow(0 0 15px rgba(6, 162, 235, 0.6));
+}
+
+.banner-logo:hover::before {
+    opacity: 1;
+    transform: scale(1.3) rotate(15deg);
+}
+
+/* ----------- User ----------- */
+
+/* Trophées */
+
+.trophy-counts {
+    display: flex;
+    gap: 10px;
+    font-size: 0.9em;
+}
+
+.trophy {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-weight: bold;
+}
+
+.trophy img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+
+/* Section des utilisateurs */
+.user-section {
+    margin: 20px auto;
+    border: 1px solid #444;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #2a2a2a;
+}
+
+.user-header {
+    text-transform: uppercase;
+    padding: 15px;
+    font-size: 1.4em;
+    cursor: pointer;
+    background: #3a3a3a;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.user-header:hover {
+    background: #4a90e2;
+}
+
+.user-header span {
+    font-size: 1em;
+    opacity: 0.7;
+}
+
+.user-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    color: #fff;
+}
+
+.user-achievements {
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    border-top: 1px solid #444;
+}
+
+/* Accordéon ouvert */
+.user-section.open .user-achievements {
+    display: grid;
+}
+
+.users-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.user-card {
+    background: #2a2a2a;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.user-card:hover {
+    background: #4a90e2;
+    transform: translateY(-2px);
+}
+
+
+
+
+/* ----------- Titre ----------- */
+h1 {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 48px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #fff;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ----------- Bar Circulaire ----------- */
+.circular-progress {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+}
+
+.progress-ring-bg {
+    fill: none;
+    stroke: #333;
+    stroke-width: 10;
+}
+
+.progress-ring-bar {
+    fill: none;
+    stroke: url(#gradient);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 408;
+    /* 2πr ≈ 2 * 3.14 * 65 */
+    stroke-dashoffset: 408;
+    transition: stroke-dashoffset 0.6s ease;
+}
+
+/* Dégradé bleu-violet (ajouté via <defs>) */
+.progress-ring-bar {
+    stroke: #4a90e2;
+}
+
+/* Texte au centre */
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+}
+
+
+/* ----------- Barre de contrôle (input + boutons) ----------- */
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.controls input {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #555;
+    outline: none;
+    background-color: #2a2a2a;
+    color: #fff;
+    transition: 0.2s;
+}
+
+.controls input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px #4a90e2;
+}
+
+/* ----------- Boutons ----------- */
+.controls button {
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.controls button:hover {
+    background-color: #357abd;
+    transform: translateY(-2px);
+}
+
+/* ----------- Texte progression ----------- */
+#progress-text {
+    text-align: center;
+    font-size: 18px;
+    margin: 10px 0;
+    color: #fff;
+}
+
+/* ----------- Barre de progression ----------- */
+#progress-bar-container {
+    width: 300px;
+    height: 20px;
+    background: #444;
+    border-radius: 10px;
+    margin: 0 auto 30px;
+    overflow: hidden;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #4a90e2, #9b59b6);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+/* ----------- Grille des succès ----------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.achievement-grid {
+    padding-inline-start: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px;
+}
+
+/* ----------- Carte succès ----------- */
+.achievement {
+    width: 150px;
+    height: 150px;
+    list-style: none;
+    padding: 20px;
+    background-color: #252525;
+    color: #fff;
+    text-align: center;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    transition: transform 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement:hover {
+    cursor: pointer;
+}
+
+/* ----------- Locked ----------- */
+.achievement.locked {
+    background-color: #3a3a3a;
+    /* Carte plus claire */
+    position: relative;
+    filter: grayscale(100%) brightness(0.5);
+    /* Griser image */
+    cursor: not-allowed;
+    /* Curseur interdit */
+}
+
+/* Supprimer effet bounce sur locked */
+.achievement.locked:hover {
+    animation: none;
+}
+
+/* Ajouter un cadenas centré sur la carte locked */
+.achievement.locked::after {
+    content: "🔒";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+    opacity: 0.8;
+}
+
+/* Supprimer totalement la description si locked */
+.achievement.locked .achievement-desc {
+    display: none;
+}
+
+/* Centrer verticalement l'image si locked */
+.achievement.locked .achievement-inner {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+}
+
+/* ----------- Image succès ----------- */
+.achievement-inner {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ----------- Description sous carte ----------- */
+.achievement-desc {
+    margin: 0;
+    padding: 0 40px;
+    width: auto;
+    height: 0;
+    background: linear-gradient(transparent, #1c1c1c 40%);
+    font-size: 0.8em;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    text-shadow: rgb(0, 0, 0) 2px 2px 1px;
+    transition: height 0.5s;
+}
+
+.achievement:hover .achievement-desc {
+    height: 100%;
+}
+
+/* Couleurs rareté */
+.achievement-desc.common {
+    color: #808080;
+}
+
+.achievement-desc.rare {
+    color: #4a90e2;
+}
+
+.achievement-desc.epic {
+    color: #9b59b6;
+}
+
+.achievement-desc.legendary {
+    color: #f1c40f;
+}
+
+/* Cacher desc pour locked */
+.achievement.locked .achievement-desc {
+    display: none;
+}
+
+/* ----------- Popup ----------- */
+#popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    
+    background-color: rgba(0, 0, 0, 0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#popup.visible {
+    display: flex;
+}
+
+/* Conteneur popup */
+.popup-achievement {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    /* background-image: url(img/header.png); */
+    /* opacity: 0.5; */
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.popup-achievement:hover {
+    animation: bounce 0.5s linear;
+}
+
+/* Couleurs du background selon rareté */
+.popup-achievement.common {
+    background-color: rgba(43, 40, 40, 0.4);
+}
+
+.popup-achievement.rare {
+    background-color: rgba(12, 123, 187, 0.4);
+}
+
+.popup-achievement.epic {
+    background-color: rgba(120, 40, 156, 0.4);
+}
+
+.popup-achievement.legendary {
+    background-color: rgba(233, 218, 5, 0.4);
+}
+
+
+/* Image grande du popup */
+.popup-achievement-inner {
+    width: 100%;
+    height: 300px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 8px;
+    filter: drop-shadow(10px 10px 12px #000000);
+}
+
+/* .popup-achievement-inner:hover {
+    animation: zoomIn 1s linear infinite;
+} */
+
+/* Bandeau description popup */
+.popup-description-wrapper {
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#popup-description {
+    font-size: 1.1em;
+    text-align: center;
+    text-shadow: rgb(0, 0, 0) 2px 2px 3px;
+    line-height: 1.4em;
+    padding: 8px 12px;
+    border-radius: 8px;
+    max-width: 280px;
+    color: #fff;
+    filter: drop-shadow(4px 4px 8px #000000);
+    backdrop-filter: blur(50px);
+}
+
+/* Couleurs du bandeau selon rareté */
+#popup-description.common {
+    background: rgba(85, 85, 85, 0.1);
+}
+
+#popup-description.rare {
+    background: rgba(74, 144, 226, 0.1);
+}
+
+#popup-description.epic {
+    background: rgba(156, 89, 182, 0.1);
+}
+
+#popup-description.legendary {
+    background: rgba(241, 196, 15, 0.1);
+}
+
+/* ----------- Navigation -----------  */
+
+.popup-achievement {
+    position: relative;
+    /* essentiel pour positionner les flèches à l'intérieur */
+}
+
+.popup-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0);
+    color: #fff;
+    border: none;
+    font-size: 30px;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+    z-index: 10;
+    /* pour qu’elles soient au-dessus de la carte */
+}
+
+.popup-nav:hover {
+    background: rgba(0, 0, 0, 0);
+}
+
+.popup-nav.prev {
+    left: -50px;
+    /* flèche gauche */
+}
+
+.popup-nav.next {
+    right: -50px;
+    /* flèche droite */
+}
+
+/* Animation slide gauche/droite sur tout le contenu */
+#popup-content.slide-out-left {
+    animation: slideOutLeft 0.3s forwards;
+}
+
+#popup-content.slide-in-right {
+    animation: slideInRight 0.3s forwards;
+}
+
+#popup-content.slide-out-right {
+    animation: slideOutRight 0.3s forwards;
+}
+
+#popup-content.slide-in-left {
+    animation: slideInLeft 0.3s forwards;
+}
+
+/* ----------- Animation Bounce ----------- */
+@keyframes bounce {
+    20% {
+        transform: translateY(-6px);
+    }
+
+    40% {
+        transform: translateY(0);
+    }
+
+    60% {
+        transform: translateY(-2px);
+    }
+
+    80% {
+        transform: translateY(0);
+    }
+}
+
+/* Animation flottante continue */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Animation Zoom in */
+@keyframes zoomIn {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes slideOutLeft {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

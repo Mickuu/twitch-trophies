@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Succès Twitch</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="index.js" defer></script>
+</head>
+
+<header class="banner">
+    <div class="banner-overlay">
+        <img src="img/logo-micku.png" alt="Micku Logo" class="banner-logo" />
+        <h1 class="banner-title">Mes Succès Twitch</h1>
+    </div>
+</header>
+
+<section id="users-achievements"></section>
+
+<!-- <body>
+    <div class="controls">
+    <input type="text" id="username" placeholder="Entre ton pseudo Twitch" />
+    <button onclick="loadAchievements()">Afficher</button>
+    <button onclick="toggleLocked()">Afficher/Cacher les succès non obtenus</button>
+    <button id="sortButton" onclick="toggleSortByRarity()">Trier par rareté</button>
+</div> -->
+
+
+    <!-- <div class="circular-progress">
+        <svg class="progress-ring" width="150" height="150">
+            <circle class="progress-ring-bg" cx="75" cy="75" r="65" />
+            <circle class="progress-ring-bar" cx="75" cy="75" r="65" />
+        </svg>
+        <div class="progress-text" id="progress-counter">0 / 0</div>
+    </div> -->
+
+    <div class="achievement-grid" id="achievements"></div>
+
+    <!-- POPUP -->
+    <div id="popup" onclick="hidePopup()">
+        <div class="popup-achievement" onclick="event.stopPropagation()">
+            <button class="popup-nav prev" onclick="navigatePopup(-1)">←</button>
+
+            <!-- Conteneur animé -->
+            <div id="popup-content">
+                <div class="popup-achievement-inner" id="popup-inner"></div>
+                <div class="popup-description-wrapper">
+                    <div id="popup-description"></div>
+                </div>
+            </div>
+
+            <button class="popup-nav next" onclick="navigatePopup(1)">→</button>
+        </div>
+    </div>
+</body>
+
+</html>
