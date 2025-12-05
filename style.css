@@ -701,6 +701,14 @@ h1 {
     display: none !important;
 }
 
+.achievements-placeholder {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+
 /* Un peu de responsive */
 @media (max-width: 700px) {
     .auth-bar-inner {

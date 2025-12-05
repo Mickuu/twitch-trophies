@@ -123,6 +123,43 @@ function displayAchievements(obtained) {
 }
 
 /* ================================================================
+   RESET AFFICHAGE SUCCÈS (déconnexion)
+================================================================ */
+function clearAchievementsDisplay() {
+    // 1) Vider la grille des succès perso
+    const container = document.getElementById("achievements");
+    if (container) {
+        container.innerHTML = "";
+
+        const placeholder = document.createElement("p");
+        placeholder.classList.add("achievements-placeholder");
+        placeholder.textContent =
+            "Connecte-toi avec Twitch pour voir tes succès débloqués.";
+        container.appendChild(placeholder);
+    }
+
+    // 2) Remettre la progression circulaire à 0
+    const circle = document.querySelector(".progress-ring-bar");
+    const text = document.getElementById("progress-counter");
+
+    if (circle && text) {
+        const radius = 65;
+        const circumference = 2 * Math.PI * radius;
+
+        // On garde le même calcul que dans updateCircularProgress
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference; // cercle "vide"
+
+        const total =
+            achievementsData && achievementsData.length ? achievementsData.length : 0;
+        text.textContent = `0 / ${total}`;
+    }
+
+    // 3) On reset aussi la liste des succès affichés en mémoire
+    displayedAchievements = [];
+}
+
+/* ================================================================
    MISE À JOUR PROGRESSION
 ================================================================ */
 function updateProgress(unlocked, total) {
@@ -285,7 +322,7 @@ function setupTwitchAuthUI() {
 
     if (loginBtn) {
         loginBtn.addEventListener("click", () => {
-            const scopes = []; // pas besoin de scopes particuliers ici
+            const scopes = [];
 
             const url = new URL("https://id.twitch.tv/oauth2/authorize");
             url.searchParams.set("client_id", TWITCH_CLIENT_ID);
@@ -310,11 +347,12 @@ function setupTwitchAuthUI() {
 
             setAuthButtonsState(false);
 
-            // Si tu veux, tu peux aussi vider l'affichage des succès ici
-            // clearAchievementsDisplay();
+            // 🧹 On vide complètement l'affichage des succès perso
+            clearAchievementsDisplay();
         });
     }
 }
+
 
 function setAuthButtonsState(isLoggedIn) {
     const loginBtn = document.getElementById("twitch-login-btn");
