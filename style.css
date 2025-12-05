@@ -18,7 +18,7 @@ header {
     width: 100%;
     height: 200px;
     /* Hauteur par défaut */
-    background: url("img/header.png") center/cover no-repeat;
+    background: url("img/header.png") center / cover no-repeat;
     /* Image de fond étoilée */
     display: flex;
     justify-content: center;
@@ -640,7 +640,7 @@ h1 {
     display: flex;
     align-items: center;
     gap: 16px;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .auth-buttons {
