@@ -13,10 +13,12 @@ let isSortedByRarity = false;
 // CONFIG TWITCH
 // ================================================================
 const TWITCH_CLIENT_ID = "eid0ebwtlz36hkbmvv191rxj3ba7c4"; // ⚠ ID Twitch
-const TWITCH_REDIRECT_URI = "https://mickuu.github.io/twitch-trophies/"; 
+const TWITCH_REDIRECT_URI = "https://mickuu.github.io/twitch-trophies/";
+const TWITCH_STORAGE_KEY = "twitchUser"; // pour mémoriser l'utilisateur côté navigateur
 
 document.addEventListener("DOMContentLoaded", () => {
-    setupTwitchLoginButton();
+    setupTwitchAuthUI();
+    restoreTwitchUserFromStorage();
     handleTwitchRedirect();
 });
 
@@ -274,23 +276,57 @@ function toggleSortByRarity() {
 }
 
 // ================================================================
-// CONNEXION TWITCH (Implicit OAuth Flow)
+// CONNEXION / DECONNEXION TWITCH (Implicit OAuth Flow)
 // ================================================================
-function setupTwitchLoginButton() {
-    const btn = document.getElementById("twitch-login-btn");
-    if (!btn) return;
 
-    btn.addEventListener("click", () => {
-        const scopes = []; // tu n'as pas besoin de scope particulier ici
+function setupTwitchAuthUI() {
+    const loginBtn = document.getElementById("twitch-login-btn");
+    const logoutBtn = document.getElementById("twitch-logout-btn");
 
-        const url = new URL("https://id.twitch.tv/oauth2/authorize");
-        url.searchParams.set("client_id", TWITCH_CLIENT_ID);
-        url.searchParams.set("redirect_uri", TWITCH_REDIRECT_URI);
-        url.searchParams.set("response_type", "token");
-        url.searchParams.set("scope", scopes.join(" "));
+    if (loginBtn) {
+        loginBtn.addEventListener("click", () => {
+            const scopes = []; // pas besoin de scopes particuliers ici
 
-        window.location.href = url.toString();
-    });
+            const url = new URL("https://id.twitch.tv/oauth2/authorize");
+            url.searchParams.set("client_id", TWITCH_CLIENT_ID);
+            url.searchParams.set("redirect_uri", TWITCH_REDIRECT_URI);
+            url.searchParams.set("response_type", "token");
+            url.searchParams.set("scope", scopes.join(" "));
+
+            window.location.href = url.toString();
+        });
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            // On "déconnecte" localement : on oublie l'utilisateur
+            localStorage.removeItem(TWITCH_STORAGE_KEY);
+
+            const label = document.getElementById("current-user-label");
+            if (label) label.textContent = "";
+
+            const usernameInput = document.getElementById("username");
+            if (usernameInput) usernameInput.value = "";
+
+            setAuthButtonsState(false);
+
+            // Si tu veux, tu peux aussi vider l'affichage des succès ici
+            // clearAchievementsDisplay();
+        });
+    }
+}
+
+function setAuthButtonsState(isLoggedIn) {
+    const loginBtn = document.getElementById("twitch-login-btn");
+    const logoutBtn = document.getElementById("twitch-logout-btn");
+
+    if (isLoggedIn) {
+        if (loginBtn) loginBtn.classList.add("hidden");
+        if (logoutBtn) logoutBtn.classList.remove("hidden");
+    } else {
+        if (loginBtn) loginBtn.classList.remove("hidden");
+        if (logoutBtn) logoutBtn.classList.add("hidden");
+    }
 }
 
 // Quand Twitch nous renvoie sur la page avec #access_token=...
@@ -305,29 +341,93 @@ async function handleTwitchRedirect() {
         if (accessToken) {
             const user = await fetchTwitchUser(accessToken);
             if (user) {
-                const login       = user.login;        // ex: "micku_san"
-                const displayName = user.display_name; // ex: "Micku San"
-
-                // Afficher dans la barre en haut
-                const label = document.getElementById("current-user-label");
-                if (label) {
-                    label.textContent = `Connecté en tant que ${displayName} (@${login})`;
-                }
-
-                // Remplir l'input username pour ton script actuel
-                const usernameInput = document.getElementById("username");
-                if (usernameInput) {
-                    usernameInput.value = login;
-                }
-
-                // Charger automatiquement ses succès si la fonction existe
-                if (typeof loadAchievements === "function") {
-                    loadAchievements();
-                }
+                onTwitchUserLoggedIn(user);
             }
         }
     }
 }
+
+// Quand on actualise la page, on restaure l'utilisateur si on l'avait déjà
+function restoreTwitchUserFromStorage() {
+    const stored = localStorage.getItem(TWITCH_STORAGE_KEY);
+    if (!stored) {
+        setAuthButtonsState(false);
+        return;
+    }
+
+    try {
+        const data = JSON.parse(stored);
+        if (data && data.login) {
+            const fakeUser = {
+                login: data.login,
+                display_name: data.displayName || data.login,
+            };
+            onTwitchUserLoggedIn(fakeUser, { skipSave: true, autoLoad: true });
+        } else {
+            setAuthButtonsState(false);
+        }
+    } catch (e) {
+        console.error("Erreur restoreTwitchUserFromStorage:", e);
+        setAuthButtonsState(false);
+    }
+}
+
+// Gère tout ce qu'il faut faire quand on a les infos Twitch
+function onTwitchUserLoggedIn(user, options) {
+    const opts = Object.assign({ skipSave: false, autoLoad: true }, options || {});
+    const login = user.login;
+    const displayName = user.display_name || login;
+
+    // Sauvegarde dans le localStorage (sauf si on vient déjà de restore)
+    if (!opts.skipSave) {
+        localStorage.setItem(
+            TWITCH_STORAGE_KEY,
+            JSON.stringify({ login, displayName })
+        );
+    }
+
+    const label = document.getElementById("current-user-label");
+    if (label) {
+        label.textContent = `Connecté en tant que ${displayName} (@${login})`;
+    }
+
+    const usernameInput = document.getElementById("username");
+    if (usernameInput) {
+        usernameInput.value = login;
+    }
+
+    setAuthButtonsState(true);
+
+    // Charge automatiquement les succès pour ce compte
+    if (opts.autoLoad && typeof loadAchievements === "function") {
+        loadAchievements();
+    }
+}
+
+async function fetchTwitchUser(accessToken) {
+    try {
+        const res = await fetch("https://api.twitch.tv/helix/users", {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Client-Id": TWITCH_CLIENT_ID,
+            },
+        });
+
+        if (!res.ok) {
+            console.error("Erreur Twitch API:", res.status, await res.text());
+            return null;
+        }
+
+        const data = await res.json();
+        if (data.data && data.data.length > 0) {
+            return data.data[0]; // { id, login, display_name, ... }
+        }
+    } catch (err) {
+        console.error("Erreur fetchTwitchUser:", err);
+    }
+    return null;
+}
+
 
 async function fetchTwitchUser(accessToken) {
     try {

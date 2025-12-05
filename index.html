@@ -9,41 +9,31 @@
 </head>
 
 <body>
-    
-<header class="banner">
-    <div class="banner-overlay">
-        <img src="img/logo-micku.png" alt="Micku Logo" class="banner-logo" />
-        <h1 class="banner-title">Mes Succès Twitch</h1>
+
+    <header class="banner">
+        <div class="banner-overlay">
+            <img src="img/logo-micku.png" alt="Micku Logo" class="banner-logo" />
+            <h1 class="banner-title">Mes Succès Twitch</h1>
+        </div>
+    </header>
+
+    <!-- 🔐 Barre de connexion Twitch -->
+    <div class="auth-bar">
+        <div class="auth-bar-inner">
+            <div class="auth-buttons">
+                <button id="twitch-login-btn" class="twitch-btn">
+                    Se connecter avec Twitch
+                </button>
+                <button id="twitch-logout-btn" class="twitch-btn twitch-btn-secondary hidden">
+                    Se déconnecter
+                </button>
+            </div>
+            <span id="current-user-label" class="current-user-label"></span>
+        </div>
     </div>
-</header>
-
-<!-- 🔐 Barre de connexion Twitch -->
-
-<div class="auth-bar">
-    <button id="twitch-login-btn" class="twitch-btn">
-        Se connecter avec Twitch
-    </button>
-    <span id="current-user-label" class="current-user-label"></span>
-</div>
-
-<section id="users-achievements"></section>
 
 
-    <!-- <div class="controls">
-    <input type="text" id="username" placeholder="Entre ton pseudo Twitch" />
-    <button onclick="loadAchievements()">Afficher</button>
-    <button onclick="toggleLocked()">Afficher/Cacher les succès non obtenus</button>
-    <button id="sortButton" onclick="toggleSortByRarity()">Trier par rareté</button>
-</div> -->
-
-
-    <!-- <div class="circular-progress">
-        <svg class="progress-ring" width="150" height="150">
-            <circle class="progress-ring-bg" cx="75" cy="75" r="65" />
-            <circle class="progress-ring-bar" cx="75" cy="75" r="65" />
-        </svg>
-        <div class="progress-text" id="progress-counter">0 / 0</div>
-    </div> -->
+    <section id="users-achievements"></section>
 
     <div class="achievement-grid" id="achievements"></div>
 
