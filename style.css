@@ -468,7 +468,7 @@ h1 {
     left: 0;
     height: 100vh;
     width: 100vw;
-    
+
     background-color: rgba(0, 0, 0, 0.85);
     display: none;
     justify-content: center;
@@ -627,35 +627,93 @@ h1 {
 
 /* Auth Twitch */
 .auth-bar {
+    width: 100%;
+    background: linear-gradient(90deg, rgba(15, 15, 20, 0.95), rgba(30, 20, 45, 0.95));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.auth-bar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 12px 20px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    justify-content: center;
-    margin: 16px 0 24px;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .twitch-btn {
-    background: #6441a5;
+    background: #9146ff;
     color: #fff;
     border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
+    padding: 8px 18px;
+    border-radius: 999px;
     font-weight: 600;
+    font-size: 0.95rem;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease,
+        opacity 0.15s ease,
+        background 0.15s ease;
+    letter-spacing: 0.02em;
 }
 
 .twitch-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
     opacity: 0.95;
+}
+
+.twitch-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    opacity: 0.85;
+}
+
+.twitch-btn-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    color: #f0f0f0;
+}
+
+.twitch-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .current-user-label {
     font-size: 0.9rem;
-    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
+
+/* Utilitaire pour cacher les éléments */
+.hidden {
+    display: none !important;
+}
+
+/* Un peu de responsive */
+@media (max-width: 700px) {
+    .auth-bar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .current-user-label {
+        max-width: 100%;
+    }
+}
+
 
 /* ----------- Animation Bounce ----------- */
 @keyframes bounce {
