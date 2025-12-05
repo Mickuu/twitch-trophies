@@ -625,6 +625,38 @@ h1 {
     animation: slideInLeft 0.3s forwards;
 }
 
+/* Auth Twitch */
+.auth-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    margin: 16px 0 24px;
+}
+
+.twitch-btn {
+    background: #6441a5;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.2s;
+}
+
+.twitch-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    opacity: 0.95;
+}
+
+.current-user-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
 /* ----------- Animation Bounce ----------- */
 @keyframes bounce {
     20% {

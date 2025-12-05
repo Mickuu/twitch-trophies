@@ -8,6 +8,8 @@
     <script src="index.js" defer></script>
 </head>
 
+<body>
+    
 <header class="banner">
     <div class="banner-overlay">
         <img src="img/logo-micku.png" alt="Micku Logo" class="banner-logo" />
@@ -15,10 +17,19 @@
     </div>
 </header>
 
+<!-- 🔐 Barre de connexion Twitch -->
+
+<div class="auth-bar">
+    <button id="twitch-login-btn" class="twitch-btn">
+        Se connecter avec Twitch
+    </button>
+    <span id="current-user-label" class="current-user-label"></span>
+</div>
+
 <section id="users-achievements"></section>
 
-<!-- <body>
-    <div class="controls">
+
+    <!-- <div class="controls">
     <input type="text" id="username" placeholder="Entre ton pseudo Twitch" />
     <button onclick="loadAchievements()">Afficher</button>
     <button onclick="toggleLocked()">Afficher/Cacher les succès non obtenus</button>
