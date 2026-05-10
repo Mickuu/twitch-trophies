@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Succès Twitch</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="index.js" defer></script>
+</head>
+
+<body>
+
+    <header class="banner">
+        <div class="banner-overlay">
+            <img src="img/logo-micku.png" alt="Micku Logo" class="banner-logo" />
+            <h1 class="banner-title">Mes Succès Twitch</h1>
+        </div>
+    </header>
+
+    <!-- 🔐 Barre de connexion Twitch -->
+    <div class="auth-bar">
+        <div class="auth-bar-inner">
+            <div class="auth-buttons">
+                <button id="twitch-login-btn" class="twitch-btn">
+                    Se connecter avec Twitch
+                </button>
+                <button id="twitch-logout-btn" class="twitch-btn twitch-btn-secondary hidden">
+                    Se déconnecter
+                </button>
+            </div> 
+            <span id="current-user-label" class="current-user-label"></span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="username" placeholder="Pseudo Twitch..." />
+        <button onclick="loadAchievements()">Charger</button>
+        <button onclick="toggleLocked()" id="lockButton">Masquer les non-obtenus</button>
+        <button onclick="toggleSortByRarity()" id="sortButton">Trier par rareté</button>
+    </div>
+
+    <div id="users-list" class="users-list"></div>
+
+    <section id="users-achievements"></section>
+
+    <div class="achievement-grid" id="achievements"></div>
+
+    <!-- POPUP -->
+    <div id="popup" onclick="hidePopup()">
+        <div class="popup-achievement" onclick="event.stopPropagation()">
+            <button class="popup-nav prev" onclick="navigatePopup(-1)">←</button>
+
+            <!-- Conteneur animé -->
+            <div id="popup-content">
+                <div class="popup-achievement-inner" id="popup-inner"></div>
+                <div class="popup-description-wrapper">
+                    <div id="popup-description"></div>
+                </div>
+            </div>
+
+            <button class="popup-nav next" onclick="navigatePopup(1)">→</button>
+        </div>
+    </div>
+</body>
+
+</html>
