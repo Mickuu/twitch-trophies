@@ -27,7 +27,7 @@
                 <button id="twitch-logout-btn" class="twitch-btn twitch-btn-secondary hidden">
                     Se déconnecter
                 </button>
-            </div> 
+            </div>
             <span id="current-user-label" class="current-user-label"></span>
         </div>
     </div>
@@ -40,6 +40,14 @@
     </div>
 
     <div id="users-list" class="users-list"></div>
+
+    <div class="circular-progress" id="main-progress" style="display:none">
+        <svg class="progress-ring" width="150" height="150">
+            <circle class="progress-ring-bg" cx="75" cy="75" r="65" />
+            <circle class="progress-ring-bar" cx="75" cy="75" r="65" />
+        </svg>
+        <div class="progress-text" id="progress-counter">0 / 0</div>
+    </div>
 
     <section id="users-achievements"></section>
 
