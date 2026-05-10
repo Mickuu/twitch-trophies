@@ -288,6 +288,9 @@ function navigatePopup(direction) {
 ================================================================ */
 function toggleLocked() {
     showLocked = !showLocked;
+    const button = document.getElementById("lockButton");
+    button.textContent = showLocked ? "Masquer les non-obtenus" : "Montrer les non-obtenus";
+
     const username = document.getElementById("username").value.trim();
     const obtained = userAchievements
         .filter((a) => a.pseudo.toLowerCase() === username.toLowerCase())
