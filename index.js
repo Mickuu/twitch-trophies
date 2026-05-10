@@ -682,6 +682,3 @@ async function loadAllUsersAchievements() {
    INIT : Charger la liste au démarrage
 ================================================================ */
 loadUsersList();
-
-// Afficher toutes les sections utilisateurs
-loadAllUsersAchievements();
