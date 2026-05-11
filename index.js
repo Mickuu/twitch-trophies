@@ -52,6 +52,7 @@ async function loadCSV(file) {
 async function loadUserAchievementsFromFirebase() {
     const response = await fetch(FIREBASE_URL);
     const data = await response.json();
+    console.log("Raw Firebase data:", data);
 
     const result = [];
     for (const pseudo in data) {
@@ -61,6 +62,7 @@ async function loadUserAchievementsFromFirebase() {
             }
         }
     }
+    console.log("Parsed result:", result);
     return result;
 }
 
