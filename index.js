@@ -89,8 +89,8 @@ async function loadAchievements() {
 /* ================================================================
    AFFICHAGE DES SUCCÈS
 ================================================================ */
-console.log("Obtained IDs:", obtained);
-console.log("Achievement IDs:", achievementsData.map(a => a.id));
+console.log("userAchievements:", userAchievements);
+console.log("obtained:", obtained);
 
 function displayAchievements(obtained) {
     const container = document.getElementById("achievements");
