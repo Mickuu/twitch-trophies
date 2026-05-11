@@ -53,10 +53,15 @@ async function loadUserAchievementsFromFirebase() {
     const response = await fetch(FIREBASE_URL);
     const data = await response.json();
 
-    return Object.values(data).map(entry => ({
-        pseudo: entry.pseudo?.toString() || "",
-        id: entry.id?.toString() || ""
-    })).filter(entry => entry.pseudo !== "");
+    const result = [];
+    for (const pseudo in data) {
+        for (const id in data[pseudo]) {
+            if (data[pseudo][id] === true) {
+                result.push({ pseudo, id });
+            }
+        }
+    }
+    return result;
 }
 
 // Charger les succès et lier à l'utilisateur
