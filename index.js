@@ -470,22 +470,38 @@ async function loadUsersList() {
         .filter(([pseudo, count]) => count > 0)
         .sort((a, b) => b[1] - a[1]);
 
-    const usersListDiv = document.getElementById("users-list");
-    usersListDiv.innerHTML = "";
+    const menu = document.getElementById("users-dropdown-menu");
+    const toggle = document.getElementById("users-dropdown-toggle");
+    menu.innerHTML = "";
+
+    toggle.textContent = `Viewers (${userEntries.length}) ▾`;
 
     userEntries.forEach(([pseudo, count]) => {
         const div = document.createElement("div");
         div.classList.add("user-card");
         div.textContent = `${pseudo} (${count})`;
-
         div.addEventListener("click", () => {
             document.getElementById("username").value = pseudo;
             loadAchievements();
+            menu.classList.add("hidden");
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
-        usersListDiv.appendChild(div);
+        menu.appendChild(div);
     });
 }
+
+function toggleUsersDropdown() {
+    const menu = document.getElementById("users-dropdown-menu");
+    menu.classList.toggle("hidden");
+}
+
+// Fermer le dropdown si on clique ailleurs
+document.addEventListener("click", (e) => {
+    const wrapper = document.querySelector(".users-dropdown-wrapper");
+    if (wrapper && !wrapper.contains(e.target)) {
+        document.getElementById("users-dropdown-menu")?.classList.add("hidden");
+    }
+});
 
 /* ================================================================
    INIT
