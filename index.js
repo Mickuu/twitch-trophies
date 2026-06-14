@@ -91,9 +91,6 @@ async function loadAchievements() {
 /* ================================================================
    AFFICHAGE DES SUCCÈS
 ================================================================ */
-console.log("userAchievements:", userAchievements);
-console.log("obtained:", obtained);
-
 function displayAchievements(obtained) {
     const container = document.getElementById("achievements");
     container.innerHTML = "";
@@ -111,16 +108,28 @@ function displayAchievements(obtained) {
         div.classList.add("achievement");
         if (!isUnlocked) div.classList.add("locked");
 
+        // Classe de rareté sur la carte
+        const rarity = achievement.rarity?.toLowerCase() || "";
+        if (rarity.includes("commun")) div.classList.add("rarity-common");
+        else if (rarity.includes("rare")) div.classList.add("rarity-rare");
+        else if (rarity.includes("épique")) div.classList.add("rarity-epic");
+        else if (rarity.includes("légendaire")) div.classList.add("rarity-legendary");
+
         const inner = document.createElement("div");
         inner.classList.add("achievement-inner");
         inner.style.backgroundImage = `url(img/achievements/${achievement.id}.png)`;
         div.appendChild(inner);
 
+        // Numéro façon KH
+        const num = document.createElement("span");
+        num.classList.add("achievement-number");
+        num.textContent = achievement.id;
+        div.appendChild(num);
+
         const desc = document.createElement("p");
         desc.textContent = achievement.description || "";
         desc.classList.add("achievement-desc");
 
-        const rarity = achievement.rarity?.toLowerCase() || "";
         if (rarity.includes("commun")) desc.classList.add("common");
         else if (rarity.includes("rare")) desc.classList.add("rare");
         else if (rarity.includes("épique")) desc.classList.add("epic");
@@ -157,15 +166,11 @@ function clearAchievementsDisplay() {
         container.appendChild(placeholder);
     }
 
-    const circle = document.querySelector(".progress-ring-bar");
+    const fill = document.getElementById("progress-bar-fill");
     const text = document.getElementById("progress-counter");
-
-    if (circle && text) {
-        const radius = 65;
-        const circumference = 2 * Math.PI * radius;
-        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-        circle.style.strokeDashoffset = circumference;
-        const total = achievementsData && achievementsData.length ? achievementsData.length : 0;
+    if (fill && text) {
+        fill.style.width = "0%";
+        const total = achievementsData?.length || 0;
         text.textContent = `0 / ${total}`;
     }
 
@@ -183,16 +188,13 @@ function updateProgress(unlocked, total) {
 }
 
 function updateCircularProgress(unlocked, total) {
-    const circle = document.querySelector(".progress-ring-bar");
+    const fill = document.getElementById("progress-bar-fill");
     const text = document.getElementById("progress-counter");
 
-    if (!circle || !text) return;
+    if (!fill || !text) return;
 
-    const radius = 65;
-    const circumference = 2 * Math.PI * radius;
-    const offset = circumference - (unlocked / total) * circumference;
-
-    circle.style.strokeDashoffset = offset;
+    const pct = total > 0 ? (unlocked / total) * 100 : 0;
+    fill.style.width = `${pct}%`;
     text.textContent = `${unlocked} / ${total}`;
 }
 
